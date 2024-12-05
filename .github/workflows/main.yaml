@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Fetch Postman Collection
-        uses: ./fetch-postman-collection.yml
+        uses: ./fetch-postman-collection
         with:
           postman_collection_id: ${{ secrets.POSTMAN_COLLECTION_ID }}
           postman_api_key: ${{ secrets.POSTMAN_API_KEY }}

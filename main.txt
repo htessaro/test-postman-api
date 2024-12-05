@@ -16,12 +16,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Fetch Postman Collection
-        uses: ./fetch-postman-collection.yml
+      - name: Trigger Reset API Docs Workflow
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/fetch_postman_collection.yml/dispatches \
+          -d '{"ref":"main"}'
         with:
           postman_collection_id: ${{ secrets.POSTMAN_COLLECTION_ID }}
           postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
           output_file: 'postman-collection.json'
+      #- name: Fetch Postman Collection
+      # uses: ../fetch-postman-collection.yml
+      #with:
+      # postman_collection_id: ${{ secrets.POSTMAN_COLLECTION_ID }}
+      # postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
+      # output_file: 'postman-collection.json'
 
       - name: Commit Postman Collection to Repo
         run: |

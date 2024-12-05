@@ -1,35 +1,28 @@
 name: 'Fetch Postman Collection'
-description: 'Fetch a Postman collection and save it as a JSON file.'
-author: 'Your Name'
-inputs:
-  postman_collection_id:
-    description: 'The Postman collection ID to fetch.'
-    required: true
-  postman_api_key:
-    description: 'Your Postman API key.'
-    required: true
-  output_file:
-    description: 'The file where the Postman collection will be saved.'
-    required: false
-    default: 'collection.json'
 
-outputs:
-  saved_file:
-    value: ${{ inputs.output_file }}
-    description: 'The path to the saved file.'
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+  push:
+    branches:
+      - main # Trigger the action only on pushes to the main branch
 
-runs:
-  using: 'composite'
-  steps:
-    - name: Fetch Postman Collection
-      shell: bash
-      run: |
-        curl -s -H "X-API-Key: ${{ inputs.postman_api_key }}" \
-          "https://api.postman.com/collections/${{ inputs.postman_collection_id }}" \
-          | jq '.collection' > ${{ inputs.output_file }}
-        echo "saved_file=${{ inputs.output_file }}" >> $GITHUB_OUTPUT
+jobs:
+  fetch-collection:
+    runs-on: ubuntu-latest # Specifies the OS to run the job on
 
-    - name: Validate JSON
-      shell: bash
-      run: |
-        jq empty ${{ inputs.output_file }} || (echo "Invalid JSON file" && exit 1)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3 # Checks out the repository
+
+      - name: Fetch Postman Collection
+        shell: bash
+        run: |
+          curl -s -H "X-API-Key: ${{ secrets.POSTMAN_API_KEY }}" \
+            "https://api.postman.com/collections/${{ secrets.POSTMAN_COLLECTION_ID }}" \
+            | jq '.collection' > postman-collection.json
+          echo "saved_file=postman-collection.json" >> $GITHUB_OUTPUT
+
+      - name: Validate JSON
+        shell: bash
+        run: |
+          jq empty postman-collection.json || (echo "Invalid JSON file" && exit 1)

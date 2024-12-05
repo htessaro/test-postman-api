@@ -26,3 +26,11 @@ jobs:
         shell: bash
         run: |
           jq empty postman-collection.json || (echo "Invalid JSON file" && exit 1)
+
+      - name: Commit Postman Collection to Repo
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add postman-collection.json
+          git commit -m "Add updated Postman collection"
+          git push

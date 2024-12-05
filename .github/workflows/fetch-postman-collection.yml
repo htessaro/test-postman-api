@@ -27,10 +27,14 @@ jobs:
         run: |
           jq empty postman-collection.json || (echo "Invalid JSON file" && exit 1)
 
-      - name: Commit Postman Collection to Repo
+      - name: Commit and push changes
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add postman-collection.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git merge origin/main --no-edit || echo "No conflicts to resolve."
+          git add .
           git commit -m "Add updated Postman collection"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

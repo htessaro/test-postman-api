@@ -1,0 +1,24 @@
+# .github/workflows/main.yml
+
+name: API Spec Fetch and Sync
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  fetch_postman_collection:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Call Fetch Postman Collection Action
+        uses: ./fetch-postman-collection-action # Local action in a folder
+        with:
+          postman_collection_id: ${{ secrets.POSTMAN_COLLECTION_ID }}
+          postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
+          output_file: 'postman-collection.json'

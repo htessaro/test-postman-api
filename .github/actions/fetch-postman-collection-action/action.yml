@@ -1,0 +1,43 @@
+# .github/actions/fetch-postman-collection-action/action.yml
+
+name: 'Fetch Postman Collection'
+description: 'Fetch a Postman collection and save it as a JSON file, then validate it.'
+inputs:
+  postman_collection_id:
+    description: 'The Postman collection ID to fetch.'
+    required: true
+  postman_api_key:
+    description: 'Your Postman API key.'
+    required: true
+  output_file:
+    description: 'The file where the Postman collection will be saved.'
+    required: false
+    default: 'postman-collection.json'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Fetch Postman Collection
+      shell: bash
+      run: |
+        curl -s -H "X-API-Key: ${{ inputs.postman_api_key }}" \
+          "https://api.postman.com/collections/${{ inputs.postman_collection_id }}" \
+          | jq '.collection' > ${{ inputs.output_file }}
+        echo "saved_file=${{ inputs.output_file }}" >> $GITHUB_OUTPUT
+
+    - name: Validate JSON
+      shell: bash
+      run: |
+        jq empty ${{ inputs.output_file }} || (echo "Invalid JSON file" && exit 1)
+
+    - name: Commit and push changes
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git fetch origin main
+        git merge origin/main --no-edit || echo "No conflicts to resolve."
+        git add ${{ inputs.output_file }}
+        git commit -m "Add updated Postman collection"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

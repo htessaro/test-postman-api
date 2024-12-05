@@ -1,5 +1,8 @@
 name: 'Fetch Postman Collection'
 
+permissions:
+  contents: write # Allow GitHub Actions to write to the repository
+
 on:
   workflow_dispatch: # Allows manual triggering of the workflow
   push:

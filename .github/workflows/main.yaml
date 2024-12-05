@@ -1,0 +1,31 @@
+name: API Spec Fetch and Sync
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  fetch_postman_collection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Fetch Postman Collection
+        uses: ./fetch-postman-collection.yml
+        with:
+          postman_collection_id: ${{ secrets.POSTMAN_COLLECTION_ID }}
+          postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
+          output_file: 'postman-collection.json'
+
+      - name: Commit Postman Collection to Repo
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add postman-collection.json
+          git commit -m "Add updated Postman collection"
+          git push

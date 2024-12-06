@@ -10,7 +10,7 @@ inputs:
   output_file:
     description: 'The file where the Postman collection will be saved.'
     required: false
-    default: 'postman-collection.json'
+    default: 'collection.json'
 
 runs:
   using: 'composite'
@@ -29,7 +29,7 @@ runs:
         jq empty ${{ inputs.output_file }} || (echo "Invalid JSON file" && exit 1)
 
     - name: Commit and push changes
-      shell: bash  # Explicitly specify shell for this step as well
+      shell: bash  
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

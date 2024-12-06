@@ -39,5 +39,4 @@ runs:
         git add ${{ inputs.output_file }}
         git commit -m "Add updated Postman collection"
         git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

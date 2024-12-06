@@ -2,9 +2,9 @@
   "info": {
     "_postman_id": "640c6fca-bb4b-4959-b23a-0b1278ef056b",
     "name": "Agro",
-    "description": "Este projeto implementa uma versão simplificada da comunicação com o sistema Proagro Fácil da empresa Softfocus.",
+    "description": "Este projeto implementa uma versão simplificada da comunicação com o sistema Proagro Fácil da empresa Softfocus.\n\nTeste.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "updatedAt": "2022-09-16T18:27:32.000Z",
+    "updatedAt": "2024-12-06T11:41:19.000Z",
     "createdAt": "2022-09-05T22:54:41.000Z",
     "lastUpdatedBy": "21397186",
     "uid": "21397186-640c6fca-bb4b-4959-b23a-0b1278ef056b"
@@ -99,7 +99,8 @@
           "variable": [
             {
               "key": "id",
-              "value": "631785efabf1b8ca1a55f5cf"
+              "value": "631785efabf1b8ca1a55f5cf",
+              "description": "identification"
             }
           ]
         }

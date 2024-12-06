@@ -21,6 +21,6 @@ jobs:
         with:
           postman_collection_id: ${{ secrets.POSTMAN_COLLECTION_ID }}
           postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
-          output_file: 'postman-collection.json'
+          output_file: 'postman-collection-2.json'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

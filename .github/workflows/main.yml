@@ -1,5 +1,3 @@
-# .github/workflows/main.yml
-
 name: API Spec Fetch and Sync
 
 on:
@@ -12,6 +10,9 @@ jobs:
   fetch_postman_collection:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write # This grants write access to the repository contents
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -21,6 +22,6 @@ jobs:
         with:
           postman_collection_id: ${{ secrets.POSTMAN_COLLECTION_ID }}
           postman_api_key: ${{ secrets.POSTMAN_API_KEY }}
-          output_file: 'postman-collection-2.json'
+          output_file: 'postman-collection.json'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

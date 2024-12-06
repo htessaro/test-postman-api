@@ -1,5 +1,3 @@
-# .github/actions/fetch-postman-collection-action/action.yml
-
 name: 'Fetch Postman Collection'
 description: 'Fetch a Postman collection and save it as a JSON file, then validate it.'
 inputs:
@@ -31,6 +29,7 @@ runs:
         jq empty ${{ inputs.output_file }} || (echo "Invalid JSON file" && exit 1)
 
     - name: Commit and push changes
+      shell: bash  # Explicitly specify shell for this step as well
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -39,4 +38,3 @@ runs:
         git add ${{ inputs.output_file }}
         git commit -m "Add updated Postman collection"
         git push
-
